@@ -8,7 +8,7 @@ async function main() {
     
         const fileId = await filesController.addFile({
             _id: 3,
-            filename: 'test_survey_2024.pdf',
+            fileName: 'test_survey_2024.pdf',
             fileType: 'pdf',
             uploadedAt: '2024-07-25T08:10:00Z',
             uploadedBy: 'John Doe',
