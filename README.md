@@ -1,5 +1,3 @@
-
-
 # Survey App
 
 ## Description
@@ -19,41 +17,41 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 
 1. **Clonez le repository :**
 
-    ```bash
-    git clone <URL_DU_REPOSITORY>
-    ```
+   ```bash
+   git clone <URL_DU_REPOSITORY>
+   ```
 
 2. **Accédez au dossier du projet :**
 
-    ```bash
-    cd abc-servey-app
-    ```
+   ```bash
+   cd survey-app
+   ```
 
 3. **Installez les dépendances :**
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 4. **Configurez la base de données :**
 
-    - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-    - Mettez à jour les paramètres de connexion dans `src/config/database.js` si nécessaire.
+   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
+   - Mettez à jour les paramètres de connexion dans `src/config/database.js` si nécessaire.
+   - Avant de lancer l'application, créez la base de données et les collections.
 
-    - Fichier de configuration: config/database.js contient les informations essentielles pour se connecter
-       à la base de données.
-    - Avant de lancer l'application, il faut créer la base de données et les collections.    
+   **Création de la base de données :**
 
-**Création de la base de données :**
-    
-    use abc_survey_app
-    
+   ```javascript
+   use abc_survey_app
+   ```
 
+   **Création des collections files, responses et questions :**
 
-**Création des collections files, responses et questions :**
-    db.createCollection("files")
-    db.createCollection("responses")
-    db.createCollection("questions")    
+   ```javascript
+   db.createCollection("files");
+   db.createCollection("responses");
+   db.createCollection("questions");
+   ```
 
 ## Utilisation
 
@@ -61,69 +59,63 @@ Pour démarrer l'application et tester les opérations CRUD, exécutez la comman
 
 ```bash
 npm start
-
+```
 
 ## Structure du Projet
 
 Le projet est organisé de la manière suivante :
 
-- `src/config/database.js`** : Contient la configuration de la connexion à MongoDB.
-- `src/module/fileModule.js`** : Module pour gérer les opérations liées aux fichiers.
-- `src/module/questionModule.js`** : Module pour gérer les opérations liées aux questions.
-- `src/module/responseModule.js`** : Module pour gérer les opérations liées aux réponses.
-- `src/main.js`** : Point d'entrée du programme, qui teste les différentes fonctions des modules.
+- **src/config/database.js :** Contient la configuration de la connexion à MongoDB.
+- **src/module/fileModule.js :** Module pour gérer les opérations liées aux fichiers.
+- **src/module/questionModule.js :** Module pour gérer les opérations liées aux questions.
+- **src/module/responseModule.js :** Module pour gérer les opérations liées aux réponses.
+- **src/main.js :** Point d'entrée du programme, qui teste les différentes fonctions des modules.
 
-  ## Modules et Fonctions
+## Modules et Fonctions
 
- `database.js`
+### 1. **database.js**
 
+- **connect() :**  
+  Fonction asynchrone pour se connecter à la base de données MongoDB. Elle renvoie une instance de la base de données.
 
+### 2. **fileModule.js**
 
-- `connect()` : Fonction asynchrone pour se connecter à la base de données MongoDB. 
-  Elle renvoie une instance de la base de données.
+- **addFile({ id: int, filename: string, fileType: string, uploadedAt: Date, uploadedBy: string, description: string }) :**  
+  Ajoute un fichier à la collection `files`.
 
- `fileModule.js`
+- **updateFile(id: int, { filename: string, fileType: string, uploadedAt: Date, uploadedBy: string, description: string }) :**  
+  Met à jour un fichier existant dans la collection `files` en utilisant l'ID fourni et les champs à mettre à jour.
 
-- `addFile(file)` : Ajoute un fichier à la collection `files`. Le paramètre `file` doit être un objet avec les propriétés suivantes :
-  - `_id`: ID du fichier
-  - `filename`: Nom du fichier
-  - `fileType`: Type de fichier (ex. : pdf, docx)
-  - `uploadedAt`: Date de téléversement
-  - `uploadedBy`: Nom de l'utilisateur qui a téléversé le fichier
-  - `description`: Description du fichier
+- **deleteFile(id: int) :**  
+  Supprime un fichier de la collection `files` en utilisant l'ID fourni.
 
-- `updateFile(id, updateFields)` : Met à jour un fichier existant dans la collection `files` en utilisant l'ID fourni et les champs à mettre à jour.
+- **findFile(id: int) :**  
+  Recherche un fichier dans la collection `files` en utilisant l'ID fourni et renvoie l'objet du fichier trouvé.
 
-- `deleteFile(id)`: Supprime un fichier de la collection `files` en utilisant l'ID fourni.
+### 3. **questionModule.js**
 
-- `findFile(id)` : Recherche un fichier dans la collection `files` en utilisant l'ID fourni. Renvoie l'objet du fichier trouvé.
+- **addQuestion({ id: int, title: string, type: string, options: Array, answers: Array }) :**  
+  Ajoute une question à la collection `questions`.
 
-## `questionModule.js`
-- `addQuestion(question)` : Ajoute une question à la collection `questions`. Le paramètre `question` doit être un objet avec les propriétés suivantes :
-  - `_id`: ID unique de la question
-  - `title`: Titre de la question
-  - `type`: Type de question (ex. : multiple_choice, text)
-  - `options`: Liste des options (si applicable)
-  - `answers`: Liste des réponses (si applicable)
+- **updateQuestion(id: int, { title: string, type: string, options: Array, answers: Array }) :**  
+  Met à jour une question existante dans la collection `questions` en utilisant l'ID fourni et les champs à mettre à jour.
 
-- `updateQuestion(id, updateFields)` : Met à jour une question existante dans la collection `questions` en utilisant l'ID fourni et les champs à mettre à jour.
+- **deleteQuestion(id: int) :**  
+  Supprime une question de la collection `questions` en utilisant l'ID fourni.
 
-- **`deleteQuestion(id)`** : Supprime une question de la collection `questions` en utilisant l'ID fourni.
+- **findQuestion(id: int) :**  
+  Recherche une question dans la collection `questions` en utilisant l'ID fourni et renvoie l'objet de la question trouvée.
 
-- **`findQuestion(id)`** : Recherche une question dans la collection `questions` en utilisant l'ID fourni. Renvoie l'objet de la question trouvée.
+### 4. **responseModule.js**
 
-##`responseModule.js`
-- `addResponse(response)` : Ajoute une réponse à la collection `responses`. Le paramètre `response` doit être un objet avec les propriétés suivantes :
-  - `_id`: ID de la réponse
-  - `surveyId`: ID de l'enquête
-  - `respondentId`: ID du répondant
-  - `responseDate`: Date de la réponse
-  - `answers`: Liste des réponses aux questions
+- **addResponse({ id: int, surveyId: int, respondentId: int, responseDate: Date, answers: Array }) :**  
+  Ajoute une réponse à la collection `responses`.
 
-- **`updateResponse(id, updateFields)`** : Met à jour une réponse existante dans la collection `responses` en utilisant l'ID fourni et les champs à mettre à jour.
+- **updateResponse(id: int, { surveyId: int, respondentId: int, responseDate: Date, answers: Array }) :**  
+  Met à jour une réponse existante dans la collection `responses` en utilisant l'ID fourni et les champs à mettre à jour.
 
-- `deleteResponse(id)` : Supprime une réponse de la collection `responses` en utilisant l'ID fourni.
+- **deleteResponse(id: int) :**  
+  Supprime une réponse de la collection `responses` en utilisant l'ID fourni.
 
-- `findResponse(id)` : Recherche une réponse dans la collection `responses` en utilisant l'ID fourni. Renvoie l'objet de la réponse trouvée.
-
-
+- **findResponse(id: int) :**  
+  Recherche une réponse dans la collection `responses` en utilisant l'ID fourni et renvoie l'objet de la réponse trouvée.
