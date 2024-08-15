@@ -122,4 +122,4 @@ Le projet est organisé de la manière suivante :
 
 ## Auteur
 
-- [Fatouma Abdallahi Cisse](https://github.com/Fatoumacisse99/survey-app.git)
+- [Fatouma Abdallahi Cisse](https://github.com/Fatoumacisse99)
