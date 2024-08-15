@@ -1,6 +1,3 @@
-
-// src/config/questionModule
-
 const { connect } = require('../config/database');
 
 // Ajouter une question
@@ -9,24 +6,32 @@ async function addQuestion(question) {
         const db = await connect();
         const collection = db.collection('questions');
         const result = await collection.insertOne(question);
-        return result.insertedId;
+
+        const insertedId = result.insertedId;
+        console.log('Question ajoutée avec ID:', insertedId);
+        return insertedId;
     } catch (error) {
-        if (error.code === 11000) {  
+        if (error.code === 11000) {
             throw new Error(`Une question avec l'ID ${question._id} existe déjà.`);
+        } else {
+            console.error("Erreur lors de l'ajout de la question:", error);
+            throw error;
         }
-        throw error;  
     }
 }
-
 
 // Modifier une question
 async function updateQuestion(id, updateFields) {
     try {
         const db = await connect();
         const collection = db.collection('questions');
-        await collection.updateOne({ _id: id }, { $set: updateFields });
+        const result = await collection.updateOne({ _id: id }, { $set: updateFields });
+
+        if (result.modifiedCount === 0) {
+            throw new Error(`Aucune question trouvée pour l'ID ${id}`);
+        }
     } catch (error) {
-        console.error('Erreur lors de la modification de la question:', error);
+        console.error('Erreur lors de la mise à jour de la question:', error);
         throw error;
     }
 }
@@ -36,7 +41,13 @@ async function deleteQuestion(id) {
     try {
         const db = await connect();
         const collection = db.collection('questions');
-        await collection.deleteOne({ _id: id });
+        const result = await collection.deleteOne({ _id: id });
+
+        if (result.deletedCount === 0) {
+            throw new Error(`Aucune question trouvée pour l'ID ${id}`);
+        } else {
+            console.log(`Question avec l'ID ${id} supprimée avec succès.`);
+        }
     } catch (error) {
         console.error('Erreur lors de la suppression de la question:', error);
         throw error;
@@ -48,7 +59,13 @@ async function findQuestion(id) {
     try {
         const db = await connect();
         const collection = db.collection('questions');
-        return await collection.findOne({ _id: id });
+        const question = await collection.findOne({ _id: id });
+
+        if (!question) {
+            throw new Error(`Aucune question trouvée pour l'ID ${id}`);
+        }
+
+        return question;
     } catch (error) {
         console.error('Erreur lors de la recherche de la question:', error);
         throw error;

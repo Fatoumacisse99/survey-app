@@ -1,5 +1,3 @@
-// src/config/fileModule
-
 const { connect } = require('../config/database');
 
 // Ajouter un fichier
@@ -8,12 +6,17 @@ async function addFile(file) {
         const db = await connect();
         const collection = db.collection('files');
         const result = await collection.insertOne(file);
-        return result.insertedId;
+
+        const insertedId = result.insertedId;
+        console.log('Fichier ajouté avec ID:', insertedId);
+        return insertedId;
     } catch (error) {
-        if (error.code === 11000) {  
-            throw new Error(`Une question avec l'ID ${file._id} existe déjà.`);
+        if (error.code === 11000) {
+            throw new Error(`Un fichier avec l'ID ${file._id} existe déjà.`);
+        } else {
+            console.error("Erreur lors de l'ajout du fichier:", error);
+            throw error;
         }
-        throw error;  
     }
 }
 
@@ -22,9 +25,13 @@ async function updateFile(id, updateFields) {
     try {
         const db = await connect();
         const collection = db.collection('files');
-        await collection.updateOne({ _id: id }, { $set: updateFields });
+        const result = await collection.updateOne({ _id: id }, { $set: updateFields });
+
+        if (result.modifiedCount === 0) {
+            throw new Error(`Aucun fichier trouvé pour l'ID ${id}`);
+        }
     } catch (error) {
-        console.error('Erreur lors de la modification du fichier:', error);
+        console.error('Erreur lors de la mise à jour du fichier:', error);
         throw error;
     }
 }
@@ -34,7 +41,13 @@ async function deleteFile(id) {
     try {
         const db = await connect();
         const collection = db.collection('files');
-        await collection.deleteOne({ _id: id });
+        const result = await collection.deleteOne({ _id: id });
+
+        if (result.deletedCount === 0) {
+            throw new Error(`Aucun fichier trouvé pour l'ID ${id}`);
+        } else {
+            console.log(`Fichier avec l'ID ${id} supprimé avec succès.`);
+        }
     } catch (error) {
         console.error('Erreur lors de la suppression du fichier:', error);
         throw error;
@@ -46,7 +59,13 @@ async function findFile(id) {
     try {
         const db = await connect();
         const collection = db.collection('files');
-        return await collection.findOne({ _id: id });
+        const file = await collection.findOne({ _id: id });
+
+        if (!file) {
+            throw new Error(`Aucun fichier trouvé pour l'ID ${id}`);
+        }
+
+        return file;
     } catch (error) {
         console.error('Erreur lors de la recherche du fichier:', error);
         throw error;
