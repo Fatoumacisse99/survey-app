@@ -119,3 +119,7 @@ Le projet est organisé de la manière suivante :
 
 - **findResponse(id: int) :**  
   Recherche une réponse dans la collection `responses` en utilisant l'ID fourni et renvoie l'objet de la réponse trouvée.
+
+## Auteur
+
+- [Fatouma Abdallahi Cisse](https://github.com/Fatoumacisse99/survey-app.git)
