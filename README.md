@@ -18,7 +18,7 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 1. **Clonez le repository :**
 
    ```bash
-   git clone https://github.com/Fatoumacisse99/survey-app.git
+   git clone <URL_DU_REPOSITORY>
    ```
 
 2. **Accédez au dossier du projet :**
@@ -35,23 +35,7 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 
 4. **Configurez la base de données :**
 
-   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-   - Mettez à jour les paramètres de connexion dans `src/config/database.js` si nécessaire.
-   - Avant de lancer l'application, créez la base de données et les collections.
-
-   **Création de la base de données :**
-
-   ```javascript
-   use abc_survey_app
-   ```
-
-   **Création des collections files, responses et questions :**
-
-   ```javascript
-   db.createCollection("files");
-   db.createCollection("responses");
-   db.createCollection("questions");
-   ```
+   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale
 
 ## Utilisation
 
@@ -80,10 +64,10 @@ Le projet est organisé de la manière suivante :
 
 ### 2. **fileModule.js**
 
-- **addFile({ id: int, filename: string, fileType: string, uploadedAt: Date, uploadedBy: string, description: string }) :**  
+- **addFile({ id: int, name: string, description: string, createdAt:Date, createdBy { employeeName:string, employeeRole:string}  }) :**  
   Ajoute un fichier à la collection `files`.
 
-- **updateFile(id: int, { filename: string, fileType: string, uploadedAt: Date, uploadedBy: string, description: string }) :**  
+- **updateFile( id: int,{ name: string, description: string, createdAt:Date, createdBy { employeeName:string, employeeRole:string}  }) :**  
   Met à jour un fichier existant dans la collection `files` en utilisant l'ID fourni et les champs à mettre à jour.
 
 - **deleteFile(id: int) :**  
@@ -94,10 +78,10 @@ Le projet est organisé de la manière suivante :
 
 ### 3. **questionModule.js**
 
-- **addQuestion({ id: int, title: string, type: string, options: Array, answers: Array }) :**  
+- **addQuestion( { id: int, idFile:int, title: string, type: string, options: int }) :**  
   Ajoute une question à la collection `questions`.
 
-- **updateQuestion(id: int, { title: string, type: string, options: Array, answers: Array }) :**  
+- **updateQuestion(id: int, { idFile:int, title: string, type: string, options: int }) :**  
   Met à jour une question existante dans la collection `questions` en utilisant l'ID fourni et les champs à mettre à jour.
 
 - **deleteQuestion(id: int) :**  
@@ -108,10 +92,10 @@ Le projet est organisé de la manière suivante :
 
 ### 4. **responseModule.js**
 
-- **addResponse({ id: int, surveyId: int, respondentId: int, responseDate: Date, answers: Array }) :**  
+- **addResponse({ id: int, idQuestion: int, title: string, type: string, answers: string }) :**  
   Ajoute une réponse à la collection `responses`.
 
-- **updateResponse(id: int, { surveyId: int, respondentId: int, responseDate: Date, answers: Array }) :**  
+- **updateResponse( id: int, { idQuestion: int, title: string, type: string, answers: string }) :**  
   Met à jour une réponse existante dans la collection `responses` en utilisant l'ID fourni et les champs à mettre à jour.
 
 - **deleteResponse(id: int) :**  
@@ -119,7 +103,3 @@ Le projet est organisé de la manière suivante :
 
 - **findResponse(id: int) :**  
   Recherche une réponse dans la collection `responses` en utilisant l'ID fourni et renvoie l'objet de la réponse trouvée.
-
-## Auteur
-
-- [Fatouma Abdallahi Cisse](https://github.com/Fatoumacisse99)

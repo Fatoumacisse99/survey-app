@@ -1,84 +1,75 @@
-const filesController = require('./module/fileModule');
-const questionsController = require('./module/questionModule');
-const responsesController = require('./module/responseModule');
+const fileModule = require("./module/fileModule");
+const questionModule = require("./module/questionModule");
+const responseModule = require("./module/responseModule");
 
+const newFile = {
+  id: 101,
+  name: "Document 101",
+  description: "Ceci est un document101 important",
+  createdAt: new Date(),
+  createdBy: {
+    employeeName: "Fatima Cisse",
+    employeeRole: "Developpeuse web",
+  },
+};
+const updateFile = {
+  name: "Document 101- Mise à jour",
+  description: "Ceci est un document101 important mis à jour",
+  createdAt: new Date(),
+  createdBy: {
+    employeeName: "Ahmed Mouhamed",
+    employeeRole: "Developpeur",
+  },
+};
+const newQuestion = {
+  id: 44,
+  idFile: 101,
+  title: "Quel est le titre du document2 ?",
+  type: "texte",
+  options: 2,
+};
+const updateQuestion = {
+  idFile: 44,
+  title: "Quel est le titre mis à jour du document2 ?",
+  type: "texte",
+  options: 5,
+};
 async function main() {
-    try {
-       // Ajouter un fichier
-    
-        // const fileId = await filesController.addFile({
-        //     _id: 30,
-        //     fileName: 'test_survey_2024.pdf',
-        //     fileType: 'pdf',
-        //     uploadedAt: '2024-07-25T08:10:00Z',
-        //     uploadedBy: 'John Doe',
-        //     description: 'Document de test pour l\'enquête 2024.'
-        // });
-        
+  try {
+    // await fileModule.addFile(newFile);
+    // await fileModule.updateFile(1, updateFile);
+    // await fileModule.findFile();
+    // await fileModule.deleteFile(100);
 
-        // Ajouter une question
-       
-        // const questionId = await questionsController.addQuestion({
-        //     _id: 30,
-        //     title: 'Quel est votre produit préféré ?',
-        //     type: 'multiple_choice',
-        //     options: ['Produit A', 'Produit B', 'Produit C'],
-        //     answers: []
-        // });
-        
-        // Ajouter une réponse
-        // const responseId = await responsesController.addResponse({
-        //     _id: 15,
-        //     surveyId: 1,
-        //     respondentId: 'user67890',
-        //     responseDate: '2024-08-01T10:00:00Z',
-        //     answers: [
-        //         { questionId: 2, answer: 'Produit B' }
-        //     ]
-        // });
-        
+    await questionModule.addQuestion(newQuestion);
+    await questionModule.updateQuestion(44, updateQuestion);
+    const question = await questionModule.findQuestion();
+    await questionModule.deleteQuestion(100);
 
-        // // Trouver un fichier
-        
-        // const file = await filesController.findFile(2);
-        
+    const newResponseId = await responseModule.addResponse({
+      id: 11,
+      idQuestion: 6,
+      title: "Réponse à la question2",
+      type: "texte",
+      answers: 'Le titre du document est "Document 2 - Mise à jour".',
+    });
 
-        // // Trouver une question
-        
-        // const question = await questionsController.findQuestion(2);
-        
+ 
+    await responseModule.updateResponse(10, {
+      idQuestion: 10,
+      title: "Réponse mise à jour à la question2",
+      type: "texte",
+      answers: 'Le titre du document est "Document 2".',
+    });
 
-        // // Trouver une réponse
-        // const response = await responsesController.findResponse(100);
-      
+    // Exemple de recherche d'une réponse
+     await responseModule.findResponse();
 
-        // // Mettre à jour un fichier
-        // await filesController.updateFile(2, { filename: 'updated_survey_2024.pdf' });
-        
-
-        // // Mettre à jour une question
-        // await questionsController.updateQuestion(2, { title: 'Quel est votre produit préféré aujourd\'hui ?' });
-       
-
-        // // Mettre à jour une réponse
-        // await responsesController.updateResponse(2, { answers: [{ questionId: 2, answer: 'Produit A' }] });
-        
-
-        // // Supprimer un fichier
-        await filesController.deleteFile(30);
-       
-
-        // // Supprimer une question
-        // await questionsController.deleteQuestion(2);
-        
-
-        // Supprimer une réponse
-        // await responsesController.deleteResponse(1);
-       
-
-    } catch (err) {
-        console.error('Erreur:', err);
-    }
+    // Exemple de suppression d'une réponse
+    await responseModule.deleteResponse(11  );
+  } catch (error) {
+    console.error("Erreur lors de l'exécution:", error.message);
+  }
 }
 
 main();
