@@ -7,12 +7,12 @@ async function addResponse(responseData) {
     const idExist = await collection.findOne({ id: responseData.id });
     if (idExist) {
       throw new Error(
-        "Impossible d'avoir deux identifiants identiques dans une base de donneé."
+        "Impossible d'avoir deux IDs identiques dans la collection 'responses'."
       );
     }
     const result = await collection.insertOne(responseData);
     console.log("Réponse ajoutée avec l'ID :", responseData.id);
-    return result.insertedId; 
+    return result.insertedId; // Retourne l'ID inséré
   } catch (error) {
     console.error("Erreur lors de l'ajout de la réponse :", error.message);
   }
@@ -47,7 +47,7 @@ async function deleteResponse(id) {
     if (result.deletedCount === 0) {
       throw new Error(`Aucune réponse trouvée avec l'ID ${id}`);
     }
-    console.log(`Réponse avec ${id} est supprimée avec succès.`);
+    console.log("Réponse supprimée avec succès.");
   } catch (error) {
     console.error(
       "Erreur lors de la suppression de la réponse :",

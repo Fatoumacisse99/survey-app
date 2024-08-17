@@ -7,11 +7,11 @@ async function addQuestion(questionData) {
     const idExist = await collection.findOne({ id: questionData.id });
     if (idExist) {
       throw new Error(
-        "Impossible d'avoir deux identifiants identiques dans une base de donnée."
+        "Impossible d'avoir deux IDs identiques dans la collection 'questions'."
       );
     }
     const result = await collection.insertOne(questionData);
-    console.log("Question ajoutée avec l'ID :", questionData);
+    console.log("Question ajoutée avec l'ID :", questionData.id);
   } catch (error) {
     console.error("Erreur lors de l'ajout de la question :", error.message);
   }
@@ -28,7 +28,7 @@ async function updateQuestion(id, updatedQuestion) {
     if (result.modifiedCount === 0) {
       throw new Error(`Aucune question trouvée avec l'ID ${id}`);
     }
-    console.log(`Question avec ${id} est  mise à jour avec succès.`, updatedQuestion);
+    console.log("Question mise à jour avec succès.", updatedQuestion);
   } catch (error) {
     console.error(
       "Erreur lors de la mise à jour d'une question :",
@@ -45,7 +45,7 @@ async function deleteQuestion(id) {
     if (result.deletedCount === 0) {
       throw new Error(`Aucune question trouvée avec l'ID ${id}`);
     }
-    console.log(`Question avec ${id} est  supprimée avec succès.`);
+    console.log("Question supprimée avec succès.");
   } catch (error) {
     console.error(
       "Erreur lors de la suppression de la question :",
