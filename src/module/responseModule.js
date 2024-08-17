@@ -7,27 +7,30 @@ async function addResponse(responseData) {
     const idExist = await collection.findOne({ id: responseData.id });
     if (idExist) {
       throw new Error(
-        "Impossible d'avoir deux ids identiques dans la collection responses"
+        "Impossible d'avoir deux identifiants identiques dans une base de donneé."
       );
     }
     const result = await collection.insertOne(responseData);
-    console.log("Réponse ajoutée avec l'ID :", responseData);
+    console.log("Réponse ajoutée avec l'ID :", responseData.id);
+    return result.insertedId; 
   } catch (error) {
     console.error("Erreur lors de l'ajout de la réponse :", error.message);
   }
 }
-async function updateResponse(id, updateResponse) {
+
+async function updateResponse(id, updatedResponse) {
   try {
     const db = await connect();
     const collection = db.collection("responses");
     const result = await collection.updateOne(
-      { _id: id },
-      { $set: updateResponse }
+      { id: id },
+      { $set: updatedResponse }
     );
     if (result.modifiedCount === 0) {
       throw new Error(`Aucune réponse trouvée avec l'ID ${id}`);
     }
     console.log("Réponse mise à jour avec succès.");
+    return result;
   } catch (error) {
     console.error(
       "Erreur lors de la mise à jour de la réponse :",
@@ -35,15 +38,16 @@ async function updateResponse(id, updateResponse) {
     );
   }
 }
+
 async function deleteResponse(id) {
   try {
     const db = await connect();
     const collection = db.collection("responses");
-    const result = await collection.deleteOne({ _id: id });
+    const result = await collection.deleteOne({ id: id });
     if (result.deletedCount === 0) {
       throw new Error(`Aucune réponse trouvée avec l'ID ${id}`);
     }
-    console.log("Réponse supprimée avec succès.");
+    console.log(`Réponse avec ${id} est supprimée avec succès.`);
   } catch (error) {
     console.error(
       "Erreur lors de la suppression de la réponse :",
@@ -51,18 +55,20 @@ async function deleteResponse(id) {
     );
   }
 }
+
 async function findResponse() {
   try {
     const db = await connect();
     const collection = db.collection("responses");
-    const response = await collection.find({}).toArray();
-    console.log(response);
-    if (response.length === 0) {
-      throw new Error("Aucune réponse trouvée");
+    const responses = await collection.find({}).toArray();
+    if (responses.length === 0) {
+      throw new Error("Aucune réponse trouvée.");
     }
-    return response;
+    console.log(responses);
+    return responses;
   } catch (error) {
-    console.error("Erreur lors de la recherche de la réponse :", error.message);
+    console.error("Erreur lors de la recherche de réponses :", error.message);
   }
 }
+
 module.exports = { addResponse, updateResponse, deleteResponse, findResponse };
