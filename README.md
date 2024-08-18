@@ -50,9 +50,9 @@ npm start
 Le projet est organisé de la manière suivante :
 
 - **src/config/database.js :** Contient la configuration de la connexion à MongoDB.
-- **src/module/fileModule.js :** Module pour gérer les opérations liées aux fichiers.
-- **src/module/questionModule.js :** Module pour gérer les opérations liées aux questions.
-- **src/module/responseModule.js :** Module pour gérer les opérations liées aux réponses.
+- **src/module/SurveyModule.js :** Module pour gérer les opérations liées aux documents de la collection **surveys**.
+- **src/module/questionModule.js :** Module pour gérer les opérations liées aux au documents de la collection **questions**.
+- **src/module/responseModule.js :** Module pour gérer les opérations liées aux documents de la collection **responses**.
 - **src/main.js :** Point d'entrée du programme, qui teste les différentes fonctions des modules.
 
 ## Modules et Fonctions
@@ -62,44 +62,48 @@ Le projet est organisé de la manière suivante :
 - **connect() :**  
   Fonction asynchrone pour se connecter à la base de données MongoDB. Elle renvoie une instance de la base de données.
 
-### 2. **fileModule.js**
+### 2. **surveyModule.js**
 
-- **addFile({ id: int, name: string, description: string, createdAt:Date, createdBy { employeeName:string, employeeRole:string}  }) :**  
-  Ajoute un fichier à la collection `files`.
+- **addSurvey({ id: int, name: string, description: string, createdAt:Date, createdBy { employeeName:string, employeeRole:string} }) :**  
+  Ajoute un document à la collection `surveys`.
 
-- **updateFile( id: int,{ name: string, description: string, createdAt:Date, createdBy { employeeName:string, employeeRole:string}  }) :**  
-  Met à jour un fichier existant dans la collection `files` en utilisant l'ID fourni et les champs à mettre à jour.
+- **updateSurvey( id: int, { name: string, description: string, createdAt: Date, createdBy { employeeName: string, employeeRole: string} }) :**  
+  Met à jour un document existant dans la collection `surveys` en utilisant l'ID fourni et les nouveau données.
 
-- **deleteFile(id: int) :**  
-  Supprime un fichier de la collection `files` en utilisant l'ID fourni.
+- **deleteSurvey(id: int) :**  
+  Supprime un document de la collection `surveys` en utilisant l'ID fourni.
 
-- **findFile(id: int) :**  
-  Recherche un fichier dans la collection `files` en utilisant l'ID fourni et renvoie l'objet du fichier trouvé.
+- **findSurvey() :**  
+  Affiches tous les documents des la collection `surveys`, cette fonction ne prend pas de parametre.
 
 ### 3. **questionModule.js**
 
-- **addQuestion( { id: int, idFile:int, title: string, type: string, options: int }) :**  
+- **addQuestion( { id: int, idSurvey:int, title: string, type: string, options: {minValue: (1) int, maxValue: (5) int, step: (1) int} }) :**  
   Ajoute une question à la collection `questions`.
 
-- **updateQuestion(id: int, { idFile:int, title: string, type: string, options: int }) :**  
-  Met à jour une question existante dans la collection `questions` en utilisant l'ID fourni et les champs à mettre à jour.
+- **updateQuestion(id: int, { idSurvey:int, title: string, type: string, options: {minValue: (1) int, maxValue: (5) int, step: (1) int} }) :**  
+  Met à jour une question existante dans la collection `questions` en utilisant l'ID fourni et les nouveau données.
 
 - **deleteQuestion(id: int) :**  
   Supprime une question de la collection `questions` en utilisant l'ID fourni.
 
-- **findQuestion(id: int) :**  
-  Recherche une question dans la collection `questions` en utilisant l'ID fourni et renvoie l'objet de la question trouvée.
+- **findQuestion() :**  
+   Affiches tous les documents de la collection `questions`.
 
 ### 4. **responseModule.js**
 
-- **addResponse({ id: int, idQuestion: int, title: string, type: string, answers: string }) :**  
+- **addResponse({ id: int, idQuestion: int, title: string, type:string}) :**  
   Ajoute une réponse à la collection `responses`.
 
-- **updateResponse( id: int, { idQuestion: int, title: string, type: string, answers: string }) :**  
-  Met à jour une réponse existante dans la collection `responses` en utilisant l'ID fourni et les champs à mettre à jour.
+- **updateResponse( id: int, { idQuestion: int, title: string, type:string }) :**  
+  Met à jour une réponse existante dans la collection `responses` en utilisant l'ID fourni et les nouveau données.
 
 - **deleteResponse(id: int) :**  
   Supprime une réponse de la collection `responses` en utilisant l'ID fourni.
 
-- **findResponse(id: int) :**  
-  Recherche une réponse dans la collection `responses` en utilisant l'ID fourni et renvoie l'objet de la réponse trouvée.
+- **findResponse() :**  
+  Affiches tous les documents de la collection `responses`.
+
+## Auteur
+
+- [Fatouma Abdallahi Cissé](https://github.com/Fatoumacisse99/)

@@ -1,45 +1,45 @@
 const { connect } = require("../config/database");
 
-async function addSurvay(survayData) {
+async function addSurvey(surveyData) {
   try {
     const db = await connect();
-    const collection = db.collection("survays");
-    const idExist = await collection.findOne({ id: survayData.id });
+    const collection = db.collection("surveys");
+    const idExist = await collection.findOne({ id: surveyData.id });
     if (idExist) {
       throw new Error(
-        "Impossible d'avoir deux IDs identiques dans la collection 'survays'."
+        "Impossible d'avoir deux IDs identiques dans la collection 'surveys'."
       );
     }
-    const result = await collection.insertOne(survayData);
-    console.log("Fichier ajouté avec l'ID :", survayData.id);
-    return result.insertedId; // Retourne l'ID inséré
+    const result = await collection.insertOne(surveyData);
+    console.log("Fichier ajouté avec l'ID :", surveyData.id);
+    return result.insertedId;
   } catch (error) {
     console.error("Erreur lors de l'ajout du fichier :", error.message);
   }
 }
 
-async function updateSurvay(id, updatedSurvay) {
+async function updateSurvey(id, updatedSurvey) {
   try {
     const db = await connect();
-    const collection = db.collection("survays");
+    const collection = db.collection("surveys");
     const result = await collection.updateOne(
       { id: id },
-      { $set: updatedSurvay }
+      { $set: updatedSurvey }
     );
     if (result.modifiedCount === 0) {
       throw new Error(`Aucun fichier trouvé avec l'ID ${id}`);
     }
-    console.log("Fichier mis à jour avec succès.", updatedSurvay);
+    console.log("Fichier mis à jour avec succès.", updatedSurvey);
     return result;
   } catch (error) {
     console.error("Erreur lors de la mise à jour du fichier :", error.message);
   }
 }
 
-async function deleteSurvay(id) {
+async function deleteSurvey(id) {
   try {
     const db = await connect();
-    const collection = db.collection("survays");
+    const collection = db.collection("surveys");
     const result = await collection.deleteOne({ id: id });
     if (result.deletedCount === 0) {
       throw new Error(`Aucun fichier trouvé avec l'ID ${id}`);
@@ -51,19 +51,19 @@ async function deleteSurvay(id) {
   }
 }
 
-async function findSurvay() {
+async function findSurvey() {
   try {
     const db = await connect();
-    const collection = db.collection("survays");
-    const survays = await collection.find({}).toArray();
-    if (survays.length === 0) {
+    const collection = db.collection("surveys");
+    const survey = await collection.find({}).toArray();
+    if (survey.length === 0) {
       throw new Error("Aucun fichier trouvé.");
     }
-    console.log(survays);
-    return survays;
+    console.log(survey);
+    return survey;
   } catch (error) {
     console.error("Erreur lors de la recherche de fichiers :", error.message);
   }
 }
 
-module.exports = { addSurvay, updateSurvay, deleteSurvay, findSurvay };
+module.exports = { addSurvey, updateSurvey, deleteSurvey, findSurvey };

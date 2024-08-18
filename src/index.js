@@ -1,8 +1,8 @@
-const survayModule = require("./module/survayModule");
+const surveyModule = require("./module/surveyModule");
 const questionModule = require("./module/questionModule");
 const responseModule = require("./module/responseModule");
 
-const newSurvay = {
+const newSurvey = {
   id: 1,
   name: "Document 101",
   description: "Ceci est un document101 important",
@@ -12,7 +12,7 @@ const newSurvay = {
     employeeRole: "Developpeuse web",
   },
 };
-const updateSurvay = {
+const updateSurvey = {
   name: "Document 101- Mise à jour",
   description: "Ceci est un document101 important mis à jour",
   createdAt: new Date(),
@@ -23,14 +23,14 @@ const updateSurvay = {
 };
 const newQuestion = {
   id: 2,
-  idSurvay: 101,
+  idSurvey: 101,
   title: "Quel est le titre du document2 ?",
   type: "texte",
   options: 2,
 };
 const updateQuestion = {
   id: 2,
-  idSurvay: 4000,
+  idSurvey: 4000,
   title: "Quel est le titre mis à jour du document2 ?",
   type: "texte",
   options: 5,
@@ -41,20 +41,19 @@ const newResponse = {
   idQuestion: 6,
   title: "Réponse à la question2",
   type: "texte",
-  answers: 'Le titre du document est "Document 2 - Mise à jour".',
+  
 };
 const updateResponse = {
   idQuestion: 10,
   title: "Réponse mise à jour à la question2",
   type: "texte",
-  answers: 'Le titre du document est "Document 2".',
 };
 async function main() {
   try {
-    await survayModule.addSurvay(newSurvay);
-    await survayModule.updateSurvay(1, updateSurvay);
-    await survayModule.findSurvay();
-    await survayModule.deleteSurvay(100);
+    await surveyModule.addSurvey(newSurvey);
+    await surveyModule.updateSurvey(1, updateSurvey);
+    await surveyModule.findSurvey();
+    await surveyModule.deleteSurvey(100);
 
     await questionModule.addQuestion(newQuestion);
     await questionModule.updateQuestion(45, updateQuestion);

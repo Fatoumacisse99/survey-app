@@ -12,7 +12,7 @@ async function addResponse(responseData) {
     }
     const result = await collection.insertOne(responseData);
     console.log("Réponse ajoutée avec l'ID :", responseData.id);
-    return result.insertedId; // Retourne l'ID inséré
+    return result.insertedId; 
   } catch (error) {
     console.error("Erreur lors de l'ajout de la réponse :", error.message);
   }
