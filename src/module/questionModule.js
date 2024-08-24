@@ -3,39 +3,53 @@ const { connect } = require("../config/database");
 async function addQuestion(questionData) {
   try {
     const db = await connect();
-    const collection = db.collection("questions");
-    const idExist = await collection.findOne({ id: questionData.id });
+    const surveysCollection = db.collection("surveys");
+    const surveyExist = await surveysCollection.findOne({ id: questionData.idSurvey });
+    if (!surveyExist) {
+      throw new Error("L'idSurvey spécifié n'existe pas.");
+    }
+    const questionsCollection = db.collection("questions");
+    const idExist = await questionsCollection.findOne({ id: questionData.id });
     if (idExist) {
       throw new Error(
         "Impossible d'avoir deux IDs identiques dans la collection 'questions'."
       );
     }
-    const result = await collection.insertOne(questionData);
+    const result = await questionsCollection.insertOne(questionData);
     console.log("Question ajoutée avec l'ID :", questionData.id);
   } catch (error) {
     console.error("Erreur lors de l'ajout de la question :", error.message);
   }
 }
 
+
 async function updateQuestion(id, updatedQuestion) {
   try {
     const db = await connect();
-    const collection = db.collection("questions");
-    const result = await collection.updateOne(
+    const surveysCollection = db.collection("surveys");
+    const surveyExist = await surveysCollection.findOne({ id: updatedQuestion.idSurvey });
+
+    if (!surveyExist) {
+      throw new Error("L'idSurvey spécifié n'existe pas.");
+    }
+
+    const questionsCollection = db.collection("questions");
+    const result = await questionsCollection.updateOne(
       { id: id },
       { $set: updatedQuestion }
     );
+
     if (result.modifiedCount === 0) {
       throw new Error(`Aucune question trouvée avec l'ID ${id}`);
     }
+
     console.log("Question mise à jour avec succès.", updatedQuestion);
   } catch (error) {
-    console.error(
-      "Erreur lors de la mise à jour d'une question :",
-      error.message
-    );
+    console.error("Erreur lors de la mise à jour d'une question :", error.message);
   }
 }
+
+
 
 async function deleteQuestion(id) {
   try {

@@ -55,12 +55,12 @@ async function findSurvey() {
   try {
     const db = await connect();
     const collection = db.collection("surveys");
-    const survey = await collection.find({}).toArray();
-    if (survey.length === 0) {
+    const surveys = await collection.find({}).toArray();
+    if (surveys.length === 0) {
       throw new Error("Aucun fichier trouvé.");
-    }
-    console.log(survey);
-    return survey;
+    } 
+    console.log(surveys);
+    // return surveys;
   } catch (error) {
     console.error("Erreur lors de la recherche de fichiers :", error.message);
   }
